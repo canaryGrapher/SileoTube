@@ -4,27 +4,44 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite build --watch",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ext:dev": "concurrently -k \"pnpm:dev\" \"web-ext run --source-dir dist --start-url https://www.youtube.com --no-reload\"",
+    "ext:dev:chrome": "concurrently -k \"pnpm:dev\" \"web-ext run --source-dir dist --target chromium --chromium-binary auto --start-url https://www.youtube.com --no-reload\"",
+    "ext:dev:edge": "concurrently -k \"pnpm:dev\" \"web-ext run --source-dir dist --target chromium --chromium-binary msedge --start-url https://www.youtube.com --no-reload\"",
+    "ext:dev:firefox": "concurrently -k \"pnpm:dev\" \"web-ext run --source-dir dist --start-url https://www.youtube.com --no-reload\"",
+    "ext:safari:note": "echo 'For Safari: use Xcode → File → New → Project → Safari Extension App, then import dist via safari-web-extension-converter'",
+    "ext:reload": "node -e \"const fs=require('node:fs');const p='dist/reload.txt';fs.mkdirSync('dist',{recursive:true});fs.writeFileSync(p,String(Date.now()))\""
   },
   "dependencies": {
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-redux": "^9.1.2",
+    "redux": "^5.0.1",
+    "webextension-polyfill": "^0.12.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@reduxjs/toolkit": "^2.4.2",
+    "@types/node": "^24.5.2",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "@types/webextension-polyfill": "^0.12.3",
     "@vitejs/plugin-react": "^5.0.3",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.0.1",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.4.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.14",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.44.0",
-    "vite": "npm:rolldown-vite@7.1.12"
+    "vite": "npm:rolldown-vite@7.1.12",
+    "web-ext": "^8.3.0"
   },
   "pnpm": {
     "overrides": {
