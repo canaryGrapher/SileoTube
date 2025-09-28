@@ -6,15 +6,20 @@ import browser from 'webextension-polyfill'
  */
 export function handleSidebarToggle(isHidden: boolean) {
   browser.tabs.query({ url: '*://*.youtube.com/*' }).then((tabs) => {
-    tabs.forEach((tab) => {
-      if (tab.id) {
-        browser.tabs.sendMessage(tab.id, {
-          action: 'toggleSidebar',
-          hidden: isHidden,
-        }).catch(() => {
-          // Tab not accessible or no content script
+    tabs.forEach(async (tab) => {
+      if (!tab.id) return
+      try {
+        await browser.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: (hidden: boolean) => {
+            // Call the main function from actions.js
+            if (typeof window !== 'undefined' && (window as any).main) {
+              (window as any).main(hidden ? 'addLayer' : 'removeLayer')
+            }
+          },
+          args: [isHidden]
         })
-      }
+      } catch {}
     })
   })
 }
