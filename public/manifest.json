@@ -24,11 +24,5 @@
   ],
   "host_permissions": [
     "*://*.youtube.com/*"
-  ],
-  "content_scripts": [
-    {
-      "matches": ["*://*.youtube.com/*"],
-      "run_at": "document_idle"
-    }
   ]
 }
