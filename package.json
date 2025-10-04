@@ -7,13 +7,9 @@
     "dev": "vite build --watch",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "vite preview --port 5004",
     "ext:dev": "concurrently -k \"pnpm:dev\" \"web-ext run --source-dir dist --start-url https://www.youtube.com --no-reload\"",
-    "ext:dev:chrome": "concurrently -k \"pnpm:dev\" \"web-ext run --source-dir dist --target chromium --chromium-binary auto --start-url https://www.youtube.com --no-reload\"",
-    "ext:dev:edge": "concurrently -k \"pnpm:dev\" \"web-ext run --source-dir dist --target chromium --chromium-binary msedge --start-url https://www.youtube.com --no-reload\"",
-    "ext:dev:firefox": "concurrently -k \"pnpm:dev\" \"web-ext run --source-dir dist --start-url https://www.youtube.com --no-reload\"",
-    "ext:safari:note": "echo 'For Safari: use Xcode → File → New → Project → Safari Extension App, then import dist via safari-web-extension-converter'",
-    "ext:reload": "node -e \"const fs=require('node:fs');const p='dist/reload.txt';fs.mkdirSync('dist',{recursive:true});fs.writeFileSync(p,String(Date.now()))\""
+    "ext:build": "vite build && web-ext build"
   },
   "dependencies": {
     "react": "^19.1.1",

@@ -6,20 +6,41 @@ import browser from 'webextension-polyfill'
  */
 export function handleSidebarToggle(isHidden: boolean) {
   browser.tabs.query({ url: '*://*.youtube.com/*' }).then((tabs) => {
-    tabs.forEach(async (tab) => {
+    tabs.forEach((tab) => {
       if (!tab.id) return
       try {
-        await browser.scripting.executeScript({
+        browser.scripting.executeScript({
           target: { tabId: tab.id },
           func: (hidden: boolean) => {
-            // Call the main function from actions.js
-            if (typeof window !== 'undefined' && (window as any).main) {
-              (window as any).main(hidden ? 'addLayer' : 'removeLayer')
+            if (hidden) {
+              const calmTubeSidebarRemoveStyles = document.createElement('style')
+              calmTubeSidebarRemoveStyles.id = 'calmtube-sidebar-remove-styles'
+              calmTubeSidebarRemoveStyles.textContent = `
+              #guide {
+                display: none;
+              }
+              #guide-button {
+                display: none;
+              }
+              #page-manager {
+                margin: 0;
+              }
+              #content > ytd-mini-guide-renderer {
+                  display: none;
+                }
+              `
+              document.documentElement.appendChild(calmTubeSidebarRemoveStyles)
+
+            } else {
+              const calmTubeSidebarRemoveStyles = document.getElementById('calmtube-sidebar-remove-styles')
+              if (calmTubeSidebarRemoveStyles instanceof HTMLElement)
+                calmTubeSidebarRemoveStyles.remove()
             }
+
           },
           args: [isHidden]
         })
-      } catch {}
+      } catch { }
     })
   })
 }

@@ -3,6 +3,27 @@
   "name": "CalmTube",
   "version": "1.0.0",
   "description": "A calming, decluttered YouTube experience.",
+  "permissions": ["scripting", "tabs", "storage", "webNavigation"],
+  "background": {
+    "service_worker": "scripts/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": [
+        "scripts/home-page.js",
+        "scripts/result-page.js",
+        "scripts/shorts-blocker.js",
+        "scripts/shorts-recommendations-removal.js",
+        "scripts/sidebar-removal.js",
+        "scripts/watch-page.js",
+        "scripts/content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "host_permissions": ["*://*.youtube.com/*"],
   "icons": {
     "16": "icon/icon-16.png",
     "32": "icon/icon-32.png",
@@ -10,19 +31,7 @@
     "128": "icon/icon-128.png"
   },
   "action": {
-    "default_popup": "index.html"
-  },
-  "background": {
-    "service_worker": "background.js",
-    "type": "module"
-  },
-  "permissions": [
-    "activeTab",
-    "storage",
-    "scripting",
-    "tabs"
-  ],
-  "host_permissions": [
-    "*://*.youtube.com/*"
-  ]
+    "default_popup": "index.html",
+    "default_title": "CalmTube"
+  }
 }
