@@ -28,7 +28,6 @@ export default defineConfig(({ mode }) => {
           background: resolve(__dirname, 'src/background/index.ts'),
           contentScripts: resolve(__dirname, 'src/content/index.ts'),
           homePage: resolve(__dirname, 'src/content/home-page.ts'),
-          resultPage: resolve(__dirname, 'src/content/result-page.ts'),
           shortsBlocker: resolve(__dirname, 'src/content/shorts-blocker.ts'),
           shortsRecommendations: resolve(__dirname, 'src/content/shorts-recommendations-removal.ts'),
           sidebarRemoval: resolve(__dirname, 'src/content/sidebar-removal.ts'),
@@ -40,7 +39,6 @@ export default defineConfig(({ mode }) => {
             if (chunk.name === 'contentScripts') return 'scripts/content.js'
             if (chunk.name === 'homePage') return 'scripts/home-page.js'
             if (chunk.name === 'shortsBlocker') return 'scripts/shorts-blocker.js'
-            if (chunk.name === 'resultPage') return 'scripts/result-page.js'
             if (chunk.name === 'watchPage') return 'scripts/watch-page.js'
             if (chunk.name === 'shortsRecommendations') return 'scripts/shorts-recommendations-removal.js'
             if (chunk.name === 'sidebarRemoval') return 'scripts/sidebar-removal.js'

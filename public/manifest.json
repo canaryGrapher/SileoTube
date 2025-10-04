@@ -13,7 +13,6 @@
       "matches": ["*://*.youtube.com/*"],
       "js": [
         "scripts/home-page.js",
-        "scripts/result-page.js",
         "scripts/shorts-blocker.js",
         "scripts/shorts-recommendations-removal.js",
         "scripts/sidebar-removal.js",
