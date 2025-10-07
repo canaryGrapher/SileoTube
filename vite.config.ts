@@ -31,7 +31,8 @@ export default defineConfig(({ mode }) => {
           shortsBlocker: resolve(__dirname, 'src/content/shorts-blocker.ts'),
           shortsRecommendations: resolve(__dirname, 'src/content/shorts-recommendations-removal.ts'),
           sidebarRemoval: resolve(__dirname, 'src/content/sidebar-removal.ts'),
-          watchPage: resolve(__dirname, 'src/content/watch-page.ts')
+          watchPage: resolve(__dirname, 'src/content/watch-page.ts'),
+          watchPageComments: resolve(__dirname, 'src/content/watch-page-comments.ts')
         },
         output: {
           entryFileNames: (chunk: { name?: string }) => {
@@ -42,6 +43,7 @@ export default defineConfig(({ mode }) => {
             if (chunk.name === 'watchPage') return 'scripts/watch-page.js'
             if (chunk.name === 'shortsRecommendations') return 'scripts/shorts-recommendations-removal.js'
             if (chunk.name === 'sidebarRemoval') return 'scripts/sidebar-removal.js'
+            if (chunk.name === 'watchPageComments') return 'scripts/watch-page-comments.js'
             if (chunk.name === 'index') return 'index.html'
             return 'assets/[name]-[hash].js'
           },

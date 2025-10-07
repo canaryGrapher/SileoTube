@@ -62,7 +62,7 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 			lastPath = path;
 			console.log('YOUTUBE_PATH_CHANGED: ', path);
 			try {
-				// Alert the new page path (e.g., /watch, /shorts, etc.)
+				// Message the new page path (e.g., /watch, /shorts, etc.)
 				browser.tabs.sendMessage(tabId, {
 					type: 'YOUTUBE_PATH_CHANGED',
 					path: path,
@@ -70,6 +70,7 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 				});
 			} catch (e) {
 				// Ignore invalid URLs
+				console.error('Error sending message to content script: ', e);
 			}
 		}
 	}

@@ -15,6 +15,7 @@
         "scripts/home-page.js",
         "scripts/shorts-blocker.js",
         "scripts/shorts-recommendations-removal.js",
+        "scripts/watch-page-comments.js",
         "scripts/sidebar-removal.js",
         "scripts/watch-page.js",
         "scripts/content.js"

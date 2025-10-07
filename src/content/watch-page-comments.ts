@@ -8,22 +8,22 @@
   browser.runtime.onMessage.addListener((msg: any, _sender: any, _sendResponse: any) => {
     if (msg && msg.type === 'YOUTUBE_PATH_CHANGED' && msg.path === '/watch') {
       // small delay to let SPA update DOM if needed
-      const style = document.getElementById('calmtube-watch-page-focus');
+      const style = document.getElementById('calmtube-watch-page-comments-focus');
       if (msg.enabled && !style) {
         const calmTubeStyles = document.createElement('style')
-        calmTubeStyles.id = 'calmtube-watch-page-focus'
+        calmTubeStyles.id = 'calmtube-watch-page-comments-focus'
         calmTubeStyles.textContent = `
-          #secondary {
+          .ytd-comments {
             display: none;
           }
         `
         document.documentElement.appendChild(calmTubeStyles)
       }
     } else if (msg && msg.type === 'YOUTUBE_PATH_CHANGED' && msg.path !== '/watch') {
-      const style = document.getElementById('calmtube-watch-page-focus');
+      const style = document.getElementById('calmtube-watch-page-comments-focus');
       if (style) {
         style.remove();
-        console.log('calmtube-watch-page-focus removed');
+        console.log('calmtube-watch-page-comments-focus removed');
         return;
       }
     }
