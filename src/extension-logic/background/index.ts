@@ -75,6 +75,10 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
                     // Mute the tab if page is shorts and is enabled
                     if (path === '/shorts' && settings.pages.shorts) {
                         browser.tabs.update(tabId, { muted: true });
+                    } 
+                    // otherwise undo it
+                    else if (path === '/shorts' && !settings.pages.shorts) {
+                        browser.tabs.update(tabId, { muted: false });
                     }
                     browser.tabs.sendMessage(tabId, {
                         type: 'YOUTUBE_PATH_CHANGED',
