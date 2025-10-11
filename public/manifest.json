@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "CalmTube",
+  "name": "SileoTube",
   "version": "1.0.0",
   "description": "A calming, decluttered YouTube experience.",
   "permissions": ["scripting", "tabs", "storage", "webNavigation"],
@@ -13,14 +13,14 @@
       "matches": ["*://*.youtube.com/*"],
       "js": [
         "scripts/home-page.js",
-        "scripts/shorts-blocker.js",
-        "scripts/shorts-recommendations-removal.js",
-        "scripts/watch-page-comments.js",
-        "scripts/sidebar-removal.js",
+        "scripts/shorts-page.js",
         "scripts/watch-page.js",
-        "scripts/content.js"
+        "scripts/shorts-recommendations-removal.js",
+        "scripts/watch-comments.js",
+        "scripts/sidebar-removal.js"
       ],
-      "run_at": "document_end"
+      "type": "module",
+      "run_at": "document_idle"
     }
   ],
   "host_permissions": ["*://*.youtube.com/*"],
@@ -32,6 +32,6 @@
   },
   "action": {
     "default_popup": "index.html",
-    "default_title": "CalmTube"
+    "default_title": "SileoTube"
   }
 }

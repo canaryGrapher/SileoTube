@@ -1,4 +1,4 @@
-# CalmTube — Cross-browser YouTube CSS injector (Vite + React + TS + MV3)
+# SileoTube — Cross-browser YouTube CSS injector (Vite + React + TS + MV3)
 
 This repository template contains a working starting point for a Manifest V3 browser extension that:
 - Injects different CSS files for YouTube pages (home, watch, search, shorts)
@@ -10,7 +10,7 @@ This repository template contains a working starting point for a Manifest V3 bro
 
 ## File Structure
 
-calmtube-template/
+sileotube-template/
 ├── manifest.json
 ├── package.json
 ├── pnpm-lock.yaml (not included)

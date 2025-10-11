@@ -1,5 +1,7 @@
 {
-  "name": "calmtube",
+  "name": "sileotube",
+  "organization": "Sileo",
+  "description": "A calming, decluttered YouTube experience.",
   "private": true,
   "version": "0.0.0",
   "type": "module",

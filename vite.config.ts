@@ -5,6 +5,7 @@ import { resolve } from 'node:path'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   return {
+    base: './',
     plugins: [
       react(),
       {
@@ -25,29 +26,27 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         input: {
           index: resolve(__dirname, 'index.html'),
-          background: resolve(__dirname, 'src/background/index.ts'),
-          contentScripts: resolve(__dirname, 'src/content/index.ts'),
-          homePage: resolve(__dirname, 'src/content/home-page.ts'),
-          shortsBlocker: resolve(__dirname, 'src/content/shorts-blocker.ts'),
-          shortsRecommendations: resolve(__dirname, 'src/content/shorts-recommendations-removal.ts'),
-          sidebarRemoval: resolve(__dirname, 'src/content/sidebar-removal.ts'),
-          watchPage: resolve(__dirname, 'src/content/watch-page.ts'),
-          watchPageComments: resolve(__dirname, 'src/content/watch-page-comments.ts')
+          background: resolve(__dirname, 'src/extension-logic/background/index.ts'),
+          homePage: resolve(__dirname, 'src/extension-logic/content/pages/home-page.ts'),
+          watchPage: resolve(__dirname, 'src/extension-logic/content/pages/watch-page.ts'),
+          shortsPage: resolve(__dirname, 'src/extension-logic/content/pages/shorts-page.ts'),
+          shortsRecommendations: resolve(__dirname, 'src/extension-logic/content/features/shorts-recommendations-removal.ts'),
+          sidebarRemoval: resolve(__dirname, 'src/extension-logic/content/features/sidebar-removal.ts'),
+          watchComments: resolve(__dirname, 'src/extension-logic/content/features/watch-comments.ts')
         },
         output: {
           entryFileNames: (chunk: { name?: string }) => {
             if (chunk.name === 'background') return 'scripts/background.js'
-            if (chunk.name === 'contentScripts') return 'scripts/content.js'
             if (chunk.name === 'homePage') return 'scripts/home-page.js'
-            if (chunk.name === 'shortsBlocker') return 'scripts/shorts-blocker.js'
+            if (chunk.name === 'shortsPage') return 'scripts/shorts-page.js'
             if (chunk.name === 'watchPage') return 'scripts/watch-page.js'
             if (chunk.name === 'shortsRecommendations') return 'scripts/shorts-recommendations-removal.js'
             if (chunk.name === 'sidebarRemoval') return 'scripts/sidebar-removal.js'
-            if (chunk.name === 'watchPageComments') return 'scripts/watch-page-comments.js'
-            if (chunk.name === 'index') return 'index.html'
+            if (chunk.name === 'watchComments') return 'scripts/watch-comments.js'
             return 'assets/[name]-[hash].js'
           },
           format: 'es', // Use ES modules for all
+          manualChunks: undefined,
         },
       },
       outDir: 'dist',

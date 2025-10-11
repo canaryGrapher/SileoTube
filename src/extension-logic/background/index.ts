@@ -1,11 +1,13 @@
 // Background service worker for MV3 (cross-browser)
 import browser from 'webextension-polyfill'
-import { getSettings, initializeSettings, setupStorageListener, updateSetting } from '../utils/storage'
-import { changeListener } from '../extension-logic/background/listeners'
+import { getSettings, initializeSettings, setupStorageListener, updateSetting } from '../../utils/storage'
+import { pathResolver, waitForContentScript } from './utils'
 
 // Initialize settings on startup
 initializeSettings();
 setupStorageListener();
+
+
 
 // Handle extension installation
 browser.runtime.onInstalled.addListener(async (details) => {
@@ -39,6 +41,8 @@ if (isDevelopment) {
     poll();
 }
 
+let lastPath = '';
+
 // Listen for tab updates to detect YouTube URL changes and alert the new page path
 browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     // Only proceed if the tab has a URL and it's a YouTube page
@@ -46,27 +50,52 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
         // Handle both URL changes and page completion (for initial loads)
         if (changeInfo.url || changeInfo.status === 'complete') {
             const urlToProcess = changeInfo.url || tab.url;
-            changeListener({
-                type: 'APPLY_CHANGES',
-                tabId,
-                pageUrl: urlToProcess,
-            }, { tab: { id: tabId } }, () => { });
+            let path = "unsupported"
+            let enabled = false;
+            console.log('Processing URL: ', urlToProcess);
+
+            // Get current settings from storage
+            const settings = await getSettings();
+
+            try {
+                const urlObj = new URL(urlToProcess);
+                const { _path, _enabled } = pathResolver(urlObj, settings);
+                path = _path;
+                enabled = _enabled;
+
+            } catch (e) {
+                path = 'unsupported';
+            }
+            if (lastPath === path) return;
+            lastPath = path;
+            console.log('YOUTUBE_PATH_CHANGED: ', path);
+            // Wait for content script to be ready, then send message
+            waitForContentScript(tabId).then((isReady) => {
+                if (isReady) {
+                    // Mute the tab if page is shorts and is enabled
+                    if (path === '/shorts' && settings.pages.shorts) {
+                        browser.tabs.update(tabId, { muted: true });
+                    }
+                    browser.tabs.sendMessage(tabId, {
+                        type: 'YOUTUBE_PATH_CHANGED',
+                        path: path,
+                        enabled: enabled,
+                        features: settings.features
+                    }).catch(() => {
+                        console.log('Failed to send message to tab:', tabId);
+                    });
+                } else {
+                    console.log('Content script never became ready for tab:', tabId);
+                }
+            });
         }
     }
 });
 
 // Listen for messages from popup to control content scripts
 browser.runtime.onMessage.addListener((message: any, _sender: any, sendResponse: any) => {
-    // Handle PONG from content scripts
+    // Handle PING from content scripts
     if (message.type === 'PONG') {
-        console.log('Received PONG from content script on tab:', _sender.tab?.id);
-        sendResponse({ success: true });
-        return true;
-    }
-
-    // Handle CONTENT_SCRIPT_READY from content scripts
-    if (message.type === 'CONTENT_SCRIPT_READY') {
-        console.log('Content script is ready on tab:', _sender.tab?.id);
         sendResponse({ success: true });
         return true;
     }
@@ -104,7 +133,9 @@ browser.runtime.onMessage.addListener((message: any, _sender: any, sendResponse:
                         enabled: enabled
                     }).catch(() => {
                         // Content script might not be ready, this is normal
-                        console.log('1. Content script not ready for toggle on tab:', tab.id);
+                        console.log("Type of message: ", feature);
+                        console.log("Enabled: ", enabled);
+                        console.log('2. Content script not ready for toggle on tab:', tab.id);
                     });
                 }
             });
@@ -113,10 +144,25 @@ browser.runtime.onMessage.addListener((message: any, _sender: any, sendResponse:
         sendResponse({ success: true });
     }
 
-    // Handle APPLY_CHANGES message using the imported listener
-    if (message.type === 'APPLY_CHANGES') {
-        changeListener(message, _sender, sendResponse);
-        return true;
+    // Handle settings updates from popup
+    if (message && message.type === 'SETTINGS_UPDATED') {
+
+        console.log('message: ', message);
+        console.log('Settings updated:', message.settings);
+        // Dispatch custom event to notify other content scripts
+        const tabId = message.tabId;
+        const currentPageURL = window.location.href;
+        let path = 'unsupported';
+        let enabled = false;
+        const { _path, _enabled } = pathResolver(new URL(currentPageURL), message.settings);
+        path = _path;
+        enabled = _enabled;
+        browser.tabs.sendMessage(tabId, {
+            type: 'YOUTUBE_PATH_CHANGED',
+            path: path,
+            enabled: enabled,
+            features: message.settings.features
+        });
     }
 
     return true; // Keep message channel open for async responses
