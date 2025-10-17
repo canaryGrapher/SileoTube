@@ -1,4 +1,10 @@
 // Background service worker for MV3 (cross-browser)
+// Permissions usage:
+// - tabs: used for listening to updates (onUpdated), muting/unmuting shorts tabs,
+//         querying YouTube tabs, and sending messages to content scripts.
+// - storage: accessed via utils/storage for default settings, updates, and change listeners.
+// - scripting: not directly used here (no calls to scripting API).
+// - webNavigation: not directly used here (we rely on tabs.onUpdated and URL parsing).
 import browser from 'webextension-polyfill'
 import { getSettings, initializeSettings, setupStorageListener, updateSetting } from '../../utils/storage'
 import { pathResolver, waitForContentScript } from './utils'

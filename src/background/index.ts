@@ -1,4 +1,10 @@
 // Background service worker for MV3 (cross-browser)
+// Permissions usage:
+// - tabs: used below for listening to tab updates (onUpdated), querying YouTube tabs,
+//         sending messages to content scripts, and muting/unmuting tabs.
+// - storage: accessed via utils/storage to persist and read extension settings.
+// - scripting: not directly used here (no programmatic injection).
+// - webNavigation: not directly used here (navigation events are inferred via tabs.onUpdated).
 import browser from 'webextension-polyfill'
 import { getSettings, initializeSettings, setupStorageListener, updateSetting } from '../utils/storage'
 import { changeListener } from '../extension-logic/background/listeners'

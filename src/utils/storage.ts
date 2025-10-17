@@ -1,4 +1,7 @@
 import browser from 'webextension-polyfill';
+// Permissions usage in this module:
+// - storage: uses browser.storage.local.get/set to persist extension settings
+// - tabs: used indirectly to notify YouTube tabs on settings changes
 import { changeListener } from '../extension-logic/background/listeners';
 
 export interface ExtensionSettings {
