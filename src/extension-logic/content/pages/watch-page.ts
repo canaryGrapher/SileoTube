@@ -47,7 +47,9 @@
       }
       // If not /watch path, remove the style if it exists
       else {
-        removeStyles();
+        setTimeout(() => {
+          removeStyles();
+        }, 4000);
       }
     }
   });

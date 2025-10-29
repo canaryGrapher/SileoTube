@@ -2,7 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'MuseoModernoVarItalic';
+  src: url('/MuseoModerno-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
+  --brand-font: 'MuseoModernoVarItalic', system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -18,6 +27,7 @@
 }
 
 body {
+  border-radius: 20px !important;
   margin: 0;
   display: flex;
   place-items: center;

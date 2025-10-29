@@ -6,27 +6,43 @@ import SettingsPanel from './SettingsPanel';
  * Displays the extension name, description, and settings panel
  */
 const Popup: React.FC = () => {
+  const getGreeting = (): string => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  };
+
   const handleSettingChange = (category: string, key: string, value: boolean) => {
     console.log(`Setting changed: ${category}.${key} = ${value}`);
     // The storage listener in background script will handle notifying content scripts
   };
 
   return (
-    <div className="w-80 bg-white">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4">
-        <h1 className="text-xl font-bold">SileoTube</h1>
-        <p className="text-sm opacity-90">A calming, decluttered YouTube experience</p>
+    <div className="w-[380px] bg-white text-gray-900">
+      {/* Brand */}
+      <div className="px-5 pt-5">
+        <div className="flex items-center gap-3">
+          <img src="/icon/icon-48.png" alt="SileoTube" className="h-12 w-auto" />
+          <div>
+            <div className="text-2xl font-extrabold tracking-tight">SileoTube</div>
+            <div className="text-xs tracking-widest text-gray-500">by <img src="/icon/workvarLogo.png" alt="WorkVar logo" className="h-4 w-auto inline-block" /></div>
+          </div>
+        </div>
+        <div className="mt-6">
+          <div className="text-4xl font-extrabold tracking-tight">{getGreeting()}</div>
+        </div>
+        <div className="mt-6 text-lg font-semibold">Take back your focus</div>
       </div>
 
       {/* Settings Panel */}
-      <SettingsPanel onSettingChange={handleSettingChange} />
+      <div className="mt-4">
+        <SettingsPanel onSettingChange={handleSettingChange} />
+      </div>
 
       {/* Footer */}
-      <div className="border-t border-gray-200 p-3 bg-gray-50">
-        <p className="text-xs text-gray-500 text-center">
-          Changes are applied immediately to all YouTube tabs
-        </p>
+      <div className="py-2">
+        <p className="text-xs text-gray-500 text-center">Changes are applied immediately to all YouTube tabs</p>
       </div>
     </div>
   );

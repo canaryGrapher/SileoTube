@@ -19,14 +19,14 @@ export interface ExtensionSettings {
 
 const DEFAULT_SETTINGS: ExtensionSettings = {
     pages: {
-        homepage: true,
-        shorts: true,
-        watch: true,
+        homepage: false,
+        shorts: false,
+        watch: false,
     },
     features: {
         watchComments: false,
         sidebarRemoval: false,
-        shortsRecommendations: true,
+        shortsRecommendations: false,
     }
 };
 

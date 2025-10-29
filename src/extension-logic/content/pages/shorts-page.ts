@@ -197,7 +197,9 @@
       }
       else {
         // If not /shorts path, remove the style and overlay if it exists
-        removeStylesAndOverlay();
+        setTimeout(() => {
+          removeStylesAndOverlay();
+        }, 4000);
       }
     }
   });

@@ -110,51 +110,48 @@ function SettingsPanel({ onSettingChange }: SettingsPanelProps) {
   }
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="px-5 pb-6 space-y-7">
       {/* Pages Section */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">Pages</h3>
-        <div className="space-y-3">
-          <SettingToggle
-            label="Minimalist Homepage"
-            description="Clean clutter from YouTube homepage by removing video recommendations."
-            checked={settings.pages.homepage}
-            onChange={(checked) => handleToggle('pages', 'homepage', checked)}
-          />
-          <SettingToggle
-            label="Block Shorts"
-            description="Block YouTube Shorts page and disallow playing of videos on them."
-            checked={settings.pages.shorts}
-            onChange={(checked) => handleToggle('pages', 'shorts', checked)}
-          />
-          <SettingToggle
-            label="Clean Watch Page"
-            description="Get a clean video watching experience by removing recommendations from the watch page and centering the video content for maximum focus."
-            checked={settings.pages.watch}
-            onChange={(checked) => handleToggle('pages', 'watch', checked)}
-          />
-        </div>
+      <div className="space-y-4">
+        <SettingCard
+          label="Minimal Home Screen"
+          description="Clean clutter from YouTube homepage by removing video recommendations."
+          checked={settings.pages.homepage}
+          onChange={(checked) => handleToggle('pages', 'homepage', checked)}
+        />
+        <SettingCard
+          label="Block Shorts"
+          description="Block YouTube Shorts page and disallow playing of videos on them."
+          checked={settings.pages.shorts}
+          onChange={(checked) => handleToggle('pages', 'shorts', checked)}
+        />
+        <SettingCard
+          label="Clean Watch Page"
+          description="Get a focused video watching experience by removing recommendations and centering video content."
+          checked={settings.pages.watch}
+          onChange={(checked) => handleToggle('pages', 'watch', checked)}
+        />
       </div>
 
       {/* Features Section */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">Features</h3>
-        <div className="space-y-3">
-          <SettingToggle
-            label="Hide Video Comments"
-            description="Remove all comments from the watch page."
+        <h3 className="text-base font-semibold text-gray-900 mb-3">Features</h3>
+        <div className="space-y-4">
+          <SettingCard
+            label="Hide video comments"
+            description="Remove all comments from the video watching page"
             checked={settings.features.watchComments}
             onChange={(checked) => handleToggle('features', 'watchComments', checked)}
           />
-          <SettingToggle
+          <SettingCard
             label="Hide Sidebar"
             description="Remove sidebar from all the pages to discourage easy access to non required pages."
             checked={settings.features.sidebarRemoval}
             onChange={(checked) => handleToggle('features', 'sidebarRemoval', checked)}
           />
-          <SettingToggle
+          <SettingCard
             label="Hide Shorts Recommendations"
-            description="Remove shorts recommendations from everywhere on youtube."
+            description="Remove short recommendations from all pages on YouTube"
             checked={settings.features.shortsRecommendations}
             onChange={(checked) => handleToggle('features', 'shortsRecommendations', checked)}
           />
@@ -174,22 +171,34 @@ interface SettingToggleProps {
 /**
  * Individual toggle component for settings
  */
-const SettingToggle: React.FC<SettingToggleProps> = ({ label, description, checked, onChange }) => {
+const SettingToggle: React.FC<SettingToggleProps> = ({ label, checked, onChange }) => {
   return (
-    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-      <div className="flex-1">
-        <div className="font-medium text-gray-800">{label}</div>
-        <div className="text-sm text-gray-600">{description}</div>
+    <div className="flex items-center justify-between rounded-2xl">
+      <div className="flex-1 min-w-0">
+        <div className="text-lg font-semibold tracking-tight text-gray-900" style={{ fontFamily: 'var(--brand-font)' }}>{label}</div>
       </div>
-      <label className="relative inline-flex items-center cursor-pointer">
+      <label className="inline-flex items-center cursor-pointer">
         <input
           type="checkbox"
           className="sr-only peer"
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
         />
-        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+        <div className="relative w-14 h-7 bg-white shadow-[inset_21px_21px_21px_20px_rgba(0,0,0,0.25)]  peer-focus:outline-none peer-focus:ring-4 rounded-full peer dark:bg-gray-700 peer-checked:from-red-600 peer-checked:via-fuchsia-600 peer-checked:to-red-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-red-600"></div>
       </label>
+    </div>
+  );
+};
+
+interface SettingCardProps extends SettingToggleProps { }
+
+const SettingCard: React.FC<SettingCardProps> = ({ label, description, checked, onChange }) => {
+  return (
+    <div className="rounded-2xl p-[1px] bg-gradient-to-r from-rose-500 via-fuchsia-600 to-blue-600">
+      <div className="rounded-2xl bg-white shadow-sm p-4">
+        <SettingToggle label={label} description={description} checked={checked} onChange={onChange} />
+        <div className="mt-2 text-sm text-gray-600">{description}</div>
+      </div>
     </div>
   );
 };
