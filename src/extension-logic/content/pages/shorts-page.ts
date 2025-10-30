@@ -4,6 +4,20 @@
 // Plain JS content script — do not use import statements here (keeps it non-module)
 (function () {
   const browser = (globalThis as any).browser || (globalThis as any).chrome;
+
+  const pageBackground = {
+    url: 'https://images.unsplash.com/photo-1643208589889-0735ad7218f0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format',
+    description: 'A television with Netflix logo lit on it',
+    photographer: {
+      name: 'Thibault Penin',
+      url: 'https://unsplash.com/@thibaultpenin'
+    },
+    source: {
+      name: 'Unsplash',
+      url: 'https://unsplash.com/photos/a-television-with-the-netflix-logo-lit-up-in-the-dark-GrzoKN1aqSg'
+    }
+  }
+
   // Apply styles to the shorts page
   const applyStyles = () => {
     const _style = document.getElementById('sileotube-shorts-blocker-focus');
@@ -22,7 +36,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: #3C3C3C;
+    background-color: #3C3C3C;
+    background-image: url('${pageBackground.url}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: center;

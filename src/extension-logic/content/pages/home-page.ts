@@ -6,6 +6,72 @@
   const browser = (globalThis as any).browser || (globalThis as any).chrome;
   // Listen to messages from background for URL changes or setting updates
   browser.runtime.onMessage.addListener((msg: any, _sender: any, sendResponse: any) => {
+
+    const getRandomBackgroundImage = () => {
+      const backgroundImages = [
+        {
+          url: 'https://images.unsplash.com/photo-1761807446688-d87aea44ecb2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format',
+          description: "Woman looking out in a forest setting",
+          photographer: {
+            name: 'Valentina Kondrasyuk',
+            url: 'https://unsplash.com/@valentinakond'
+          },
+          source: {
+            name: "Unsplash",
+            url: "https://unsplash.com/photos/woman-looking-out-in-a-forest-setting-A8JPF1-kixA?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+          }
+        },
+        {
+          url: "https://images.unsplash.com/photo-1761074499285-5ab0e10b07ee?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format",
+          description: "A squirrel sits on a wooden post",
+          photographer: {
+            name: "Dmytro Koplyk",
+            url: "https://unsplash.com/@dkoplyk"
+          },
+          source: {
+            name: "Unsplash",
+            url: "https://unsplash.com/photos/a-squirrel-sits-on-a-wooden-post-1h8KSlNeYek"
+          }
+        },
+        {
+          url: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format",
+          description: "Man deadlifting weights",
+          photographer: {
+            name: "Victor Freitas",
+            url: "https://unsplash.com/@victorfreitas"
+          },
+          source: {
+            name: "Unsplash",
+            url: "https://unsplash.com/photos/man-holding-dumbbells-qZ-U9z4TQ6A"
+          }
+        },
+        {
+          url: "https://images.unsplash.com/photo-1513113406068-fff36fa8f987?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format",
+          description: "Two people riding in car on road",
+          photographer: {
+            name: "Nick Brugiono",
+            url: "https://unsplash.com/@nickbrugioni"
+          },
+          source: {
+            name: "Unsplash",
+            url: "https://unsplash.com/photos/two-people-riding-in-car-on-road-RsAMlfzza9Y"
+          }
+        },
+        {
+          url: "https://images.unsplash.com/photo-1506606401543-2e73709cebb4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format",
+          description: "Aerial photo of metropolitan city during night time",
+          photographer: {
+            name: "Zac Ong",
+            url: "https://unsplash.com/@zacong"
+          },
+          source: {
+            name: "Unsplash",
+            url: "https://unsplash.com/photos/aerials-photo-of-metropolitan-during-night-time-JHN1-mpgXjo"
+          }
+        }
+      ]
+      return backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+    }
     // insert new search bar
     const insertSearchBar = () => {
       const targetContent = document.querySelector("#content")
@@ -75,6 +141,10 @@
                 background-color: #3C3C3C;
                 min-height: 100vh;
                 position: relative;
+                background-image: url('${getRandomBackgroundImage().url}');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
               }
               #frosted-glass {
                 display: none;
@@ -143,9 +213,11 @@
                 cursor: pointer;
               }
 
-              #center > yt-searchbox {
+              #center > yt-searchbox, #center > yt-icon-button, #center > #voice-search-button, #center > #ai-companion-button {
                 visibility: hidden;
               }
+
+
             `
       document.documentElement.appendChild(sileotubeStyles)
       setTimeout(() => {
