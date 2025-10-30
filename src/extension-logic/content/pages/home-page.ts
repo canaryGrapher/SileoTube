@@ -11,7 +11,7 @@
     const getRandomBackgroundImage = () => {
       const backgroundImages = [
         {
-          url: 'https://ik.imagekit.io/canarygrapher/sileotube/images/woman%20in%20forest_7HH63qyJx.jpeg',
+          url: 'https://ik.imagekit.io/canarygrapher/sileotube/images/photo-1761807446688-d87aea44ecb2_7xuNdATP_.jpg?updatedAt=1761851430009',
           description: "Woman looking out in a forest setting",
           photographer: {
             name: 'Valentina Kondrasyuk',
@@ -23,7 +23,7 @@
           }
         },
         {
-          url: "https://ik.imagekit.io/canarygrapher/sileotube/images/Squirrel%20sitting_CNML_SrmY.jpeg",
+          url: "https://ik.imagekit.io/canarygrapher/sileotube/images/photo-1761074499285-5ab0e10b07ee_U-WfwKOAk.jpg?updatedAt=1761851429999",
           description: "A squirrel sitting on a wooden post",
           photographer: {
             name: "Dmytro Koplyk",
@@ -35,7 +35,7 @@
           }
         },
         {
-          url: "https://ik.imagekit.io/canarygrapher/sileotube/images/deadlifting_2U_KrIN0y.jpeg",
+          url: "https://ik.imagekit.io/canarygrapher/sileotube/images/photo-1513113406068-fff36fa8f987_hzU4MquCFc.jpg?updatedAt=1761851427042",
           description: "Man deadlifting weights",
           photographer: {
             name: "Victor Freitas",
