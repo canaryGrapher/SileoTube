@@ -11,7 +11,7 @@
     const getRandomBackgroundImage = () => {
       const backgroundImages = [
         {
-          url: 'https://images.unsplash.com/photo-1761807446688-d87aea44ecb2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format',
+          url: 'https://ik.imagekit.io/canarygrapher/sileotube/images/woman%20in%20forest_7HH63qyJx.jpeg',
           description: "Woman looking out in a forest setting",
           photographer: {
             name: 'Valentina Kondrasyuk',
@@ -23,7 +23,7 @@
           }
         },
         {
-          url: "https://images.unsplash.com/photo-1761074499285-5ab0e10b07ee?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format",
+          url: "https://ik.imagekit.io/canarygrapher/sileotube/images/Squirrel%20sitting_CNML_SrmY.jpeg",
           description: "A squirrel sitting on a wooden post",
           photographer: {
             name: "Dmytro Koplyk",
@@ -35,7 +35,7 @@
           }
         },
         {
-          url: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format",
+          url: "https://ik.imagekit.io/canarygrapher/sileotube/images/deadlifting_2U_KrIN0y.jpeg",
           description: "Man deadlifting weights",
           photographer: {
             name: "Victor Freitas",
@@ -47,7 +47,7 @@
           }
         },
         {
-          url: "https://images.unsplash.com/photo-1513113406068-fff36fa8f987?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format",
+          url: "https://ik.imagekit.io/canarygrapher/sileotube/images/Car%20on%20the%20road_1YiW58LGQ.jpeg",
           description: "Two people riding in car on road",
           photographer: {
             name: "Nick Brugiono",
@@ -224,7 +224,7 @@
               #sileotube-search-bar-button:hover {
                 background-color:rgb(166, 0, 0);
               }
-                
+
               #center > yt-searchbox, #center > yt-icon-button, #center > #voice-search-button, #center > #ai-companion-button {
                 visibility: hidden;
               }
