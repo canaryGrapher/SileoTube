@@ -29,14 +29,14 @@ const Popup: React.FC = () => {
             <div className="text-xs tracking-widest text-gray-500">by <img src="/icon/workvarLogo.png" alt="WorkVar logo" className="h-4 w-auto inline-block" /></div>
           </div>
         </div>
-        <div className="mt-6">
-          <div className="text-4xl font-extrabold tracking-tight">{getGreeting()}</div>
+        <div className="mt-4">
+          <div className="text-4xl tracking-tight" style={{ fontFamily: 'var(--brand-font)' }}>{getGreeting()}</div>
         </div>
-        <div className="mt-6 text-lg font-semibold">Take back your focus</div>
+        <div className="mt-4 text-lg font-semibold">Take back your focus</div>
       </div>
 
       {/* Settings Panel */}
-      <div className="mt-4">
+      <div className="mt-2">
         <SettingsPanel onSettingChange={handleSettingChange} />
       </div>
 
