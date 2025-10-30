@@ -13,7 +13,7 @@
       searchBarDivision.id = 'sileotube-search-bar';
       const heading = document.createElement('h1');
       heading.id = 'sileotube-search-bar-heading';
-      heading.textContent = 'Remember what you came here to do!';
+      heading.textContent = 'Remember what you came for!';
       searchBarDivision.appendChild(heading);
       const searchBarContainer = document.createElement('div');
       const searchBarInput = document.createElement('input');
@@ -107,7 +107,7 @@
 
               #sileotube-search-bar-heading {
                 color: white;
-                font-size: 2rem;
+                font-size: 4rem;
                 font-weight: 600;
                 margin: 0 0 1rem 0;
                 text-align: center;
@@ -150,7 +150,7 @@
       document.documentElement.appendChild(sileotubeStyles)
       setTimeout(() => {
         insertSearchBar();
-      }, 2000);
+      }, 500);
       return;
     }
 
@@ -158,10 +158,10 @@
       console.log("Remove Styles")
       const _style = document.getElementById('sileotube-homepage-focus');
       if (_style) _style.remove();
-      console.log("Remove Search Bar after 2 seconds")
+      console.log("Remove Search Bar after 500ms")
       setTimeout(() => {
         removeSearchBar();
-      }, 2000);
+      }, 500);
       return;
     }
     // Handle PING from background script
@@ -179,7 +179,7 @@
         else {
           setTimeout(() => {
             removeStyles();
-          }, 4000);
+          }, 500);
         }
       } else {
         removeStyles();

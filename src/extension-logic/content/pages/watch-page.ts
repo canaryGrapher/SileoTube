@@ -49,7 +49,7 @@
       else {
         setTimeout(() => {
           removeStyles();
-        }, 4000);
+        }, 500);
       }
     }
   });
