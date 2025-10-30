@@ -6,6 +6,7 @@
   const browser = (globalThis as any).browser || (globalThis as any).chrome;
   // Listen to messages from background for URL changes or setting updates
   browser.runtime.onMessage.addListener((msg: any, _sender: any, sendResponse: any) => {
+    console.log("Home Page Message");
 
     const getRandomBackgroundImage = () => {
       const backgroundImages = [
@@ -79,9 +80,10 @@
       searchBarDivision.id = 'sileotube-search-bar';
       const heading = document.createElement('h1');
       heading.id = 'sileotube-search-bar-heading';
-      heading.textContent = 'Remember what you came for!';
+      heading.textContent = 'What are you watching today?';
       searchBarDivision.appendChild(heading);
       const searchBarContainer = document.createElement('div');
+      searchBarContainer.id = 'sileotube-search-bar-box';
       const searchBarInput = document.createElement('input');
       searchBarInput.id = 'sileotube-search-bar-input';
       searchBarInput.placeholder = 'Search';
@@ -121,6 +123,7 @@
 
       const sileotubeStyles = document.createElement('style')
       sileotubeStyles.id = 'sileotube-homepage-focus'
+      const bg = getRandomBackgroundImage();
       sileotubeStyles.textContent = `
               ytd-rich-item-renderer {
                 display: none;
@@ -141,7 +144,7 @@
                 background-color: #3C3C3C;
                 min-height: 100vh;
                 position: relative;
-                background-image: url('${getRandomBackgroundImage().url}');
+                background-image: url('${bg.url}');
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -177,7 +180,7 @@
 
               #sileotube-search-bar-heading {
                 color: white;
-                font-size: 4rem;
+                font-size: 6rem;
                 font-weight: 600;
                 margin: 0 0 1rem 0;
                 text-align: center;
@@ -191,25 +194,35 @@
                 gap: 0;
               }
 
+              #sileotube-search-bar-box {
+                background: rgba(0, 0, 0, 0.35);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid #000;
+                border-radius: 10px;
+                overflow: hidden;
+              }
+
               #sileotube-search-bar > div > input {
-                width: 40vw;
-                height: 40px;
+                width: 35vw;
+                height: 50px;
                 border: none;
                 outline: none;
-                border-radius: 20px 0 0 20px;
+                font-size: 16px;
+                border-radius: 10px 0 0 10px;
                 padding: 0 15px;
-                background-color: #121212;
+                background-color: rgba(18, 18, 18, 0.7);
                 color: white;
               }
 
               #sileotube-search-bar > div > button {
                 width: 120px;
-                height: 40px;
+                height: 50px;
                 border: none;
                 outline: none;
-                background-color:rgb(255, 64, 64);
+                background-color: #FF0000;
                 color: white;
-                border-radius: 0 20px 20px 0;
+                border-radius: 0 10px 10px 0;
                 cursor: pointer;
               }
 
@@ -217,11 +230,42 @@
                 visibility: hidden;
               }
 
+              #sileotube-image-ack {
+                position: absolute;
+                bottom: 20%;
+                left: 50%;
+                transform: translateX(-50%);
+                color: rgba(255,255,255,0.9);
+                font-size: 12px;
+                text-align: center;
+              }
 
+              .sileotube-image-ack-description {
+                font-size: 18px;
+                text-align: center;
+                padding-bottom: 10px;
+              }
+
+              .sileotube-image-ack-photographer { 
+                color: #979797; 
+                font-size: 12px;
+              }
+
+              .sileotube-image-ack-photographer a { 
+                color: #979797;    
+                text-decoration: underline; 
+                cursor: pointer;
+              }
             `
       document.documentElement.appendChild(sileotubeStyles)
       setTimeout(() => {
         insertSearchBar();
+        const existingAck = document.getElementById('sileotube-image-ack');
+        if (existingAck) existingAck.remove();
+        const ack = document.createElement('div');
+        ack.id = 'sileotube-image-ack';
+        ack.innerHTML = `<div class="sileotube-image-ack-description">${bg.description}</div><div class="sileotube-image-ack-photographer">Photo by <a href="${bg.photographer.url}" target="_blank" rel="noopener noreferrer">${bg.photographer.name}</a> on <a href="${bg.source.url}" target="_blank" rel="noopener noreferrer">${bg.source.name}</a></div>`;
+        document.body.appendChild(ack);
       }, 500);
       return;
     }
@@ -233,6 +277,8 @@
       console.log("Remove Search Bar after 500ms")
       setTimeout(() => {
         removeSearchBar();
+        const ack = document.getElementById('sileotube-image-ack');
+        if (ack) ack.remove();
       }, 500);
       return;
     }
