@@ -221,6 +221,10 @@
                 cursor: pointer;
               }
 
+              #sileotube-search-bar-button:hover {
+                background-color:rgb(166, 0, 0);
+              }
+                
               #center > yt-searchbox, #center > yt-icon-button, #center > #voice-search-button, #center > #ai-companion-button {
                 visibility: hidden;
               }
