@@ -109,6 +109,13 @@
       searchBarContainer.appendChild(searchBarButton);
       searchBarDivision.appendChild(searchBarContainer);
       targetContent?.prepend(searchBarDivision);
+      searchBarInput.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const selfButton = document.getElementById('sileotube-search-bar-button') as HTMLButtonElement | null;
+          selfButton?.click();
+        }
+      });
     }
     const removeSearchBar = () => {
       const searchBar = document.getElementById('sileotube-search-bar');
@@ -195,9 +202,9 @@
               }
 
               #sileotube-search-bar-box {
-                background: rgba(0, 0, 0, 0.35);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
+                background: rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(2px);
+                -webkit-backdrop-filter: blur(2px);
                 border: 1px solid #000;
                 border-radius: 10px;
                 overflow: hidden;
@@ -232,7 +239,7 @@
 
               #sileotube-image-ack {
                 position: absolute;
-                bottom: 20%;
+                bottom: 30%;
                 left: 50%;
                 transform: translateX(-50%);
                 color: rgba(255,255,255,0.9);
