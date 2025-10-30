@@ -24,7 +24,7 @@
         },
         {
           url: "https://images.unsplash.com/photo-1761074499285-5ab0e10b07ee?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format",
-          description: "A squirrel sits on a wooden post",
+          description: "A squirrel sitting on a wooden post",
           photographer: {
             name: "Dmytro Koplyk",
             url: "https://unsplash.com/@dkoplyk"
@@ -56,18 +56,6 @@
           source: {
             name: "Unsplash",
             url: "https://unsplash.com/photos/two-people-riding-in-car-on-road-RsAMlfzza9Y"
-          }
-        },
-        {
-          url: "https://images.unsplash.com/photo-1506606401543-2e73709cebb4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format",
-          description: "Aerial photo of metropolitan city during night time",
-          photographer: {
-            name: "Zac Ong",
-            url: "https://unsplash.com/@zacong"
-          },
-          source: {
-            name: "Unsplash",
-            url: "https://unsplash.com/photos/aerials-photo-of-metropolitan-during-night-time-JHN1-mpgXjo"
           }
         }
       ]
@@ -239,7 +227,7 @@
 
               #sileotube-image-ack {
                 position: absolute;
-                bottom: 30%;
+                bottom: 5%;
                 left: 50%;
                 transform: translateX(-50%);
                 color: rgba(255,255,255,0.9);
