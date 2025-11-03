@@ -16,7 +16,7 @@ setupStorageListener();
 
 
 // Set uninstall survey URL
-browser.runtime.setUninstallURL('https://workvar.com/uninstallsurvey/products/sileotube');
+browser.runtime.setUninstallURL('https://workvar.com/products/uninstallsurvey/sileotube');
 
 // Handle extension installation
 browser.runtime.onInstalled.addListener(async (details) => {
@@ -24,7 +24,7 @@ browser.runtime.onInstalled.addListener(async (details) => {
         console.log('Extension installed, initializing default settings');
         await initializeSettings();
         // Redirect to product page on install
-        browser.tabs.create({ url: 'https://workvar.com/products/sileotube' });
+        browser.tabs.create({ url: 'https://workvar.com/products/sileotube?redirectType=install' });
     }
 });
 
