@@ -1,8 +1,0 @@
----
-globs: *.css,*.tsx
----
-# Tailwind Usage
-
-- Tailwind is enabled via PostCSS; directives are in [src/index.css](mdc:src/index.css)
-- Use utility classes in JSX; keep `App.css` minimal
-- If editor shows "Unknown at rule @tailwind", install Tailwind CSS IntelliSense or ignore CSS unknownAtRules
