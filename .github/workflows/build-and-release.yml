@@ -1,0 +1,102 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Type check
+        run: bun run compile
+
+      - name: Build Chrome extension
+        run: bun run build
+
+      - name: Build Edge extension
+        run: bun run build:edge
+
+      - name: Build Firefox extension
+        run: bun run build:firefox
+
+      - name: Zip Chrome extension
+        run: bun run zip
+
+      - name: Zip Edge extension
+        run: bun run zip:edge
+
+      - name: Zip Firefox extension
+        run: bun run zip:firefox
+
+      - name: List output files
+        run: ls -la .output/*.zip || echo "No zip files found"
+
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Find zip files
+        id: find_zips
+        run: |
+          CHROME_ZIP=$(ls .output/chrome-mv*.zip 2>/dev/null | head -1 || echo "")
+          EDGE_ZIP=$(ls .output/edge-mv*.zip 2>/dev/null | head -1 || echo "")
+          FIREFOX_ZIP=$(ls .output/firefox-mv*.zip 2>/dev/null | head -1 || echo "")
+          echo "chrome_zip=$CHROME_ZIP" >> $GITHUB_OUTPUT
+          echo "edge_zip=$EDGE_ZIP" >> $GITHUB_OUTPUT
+          echo "firefox_zip=$FIREFOX_ZIP" >> $GITHUB_OUTPUT
+          echo "Chrome zip: $CHROME_ZIP"
+          echo "Edge zip: $EDGE_ZIP"
+          echo "Firefox zip: $FIREFOX_ZIP"
+          
+          # Validate at least one zip file exists
+          if [ -z "$CHROME_ZIP" ] && [ -z "$EDGE_ZIP" ] && [ -z "$FIREFOX_ZIP" ]; then
+            echo "Error: No zip files found!"
+            exit 1
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ steps.find_zips.outputs.chrome_zip }}
+            ${{ steps.find_zips.outputs.edge_zip }}
+            ${{ steps.find_zips.outputs.firefox_zip }}
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: Release v${{ steps.get_version.outputs.version }}
+          body: |
+            ## SileoTube v${{ steps.get_version.outputs.version }}
+            
+            ### Downloads
+            - **Chrome**: `chrome-mv3.zip`
+            - **Edge**: `edge-mv3.zip`
+            - **Firefox**: `firefox-mv3.zip`
+            
+            ### Installation
+            1. Download the appropriate zip file for your browser
+            2. Extract the zip file
+            3. Open your browser's extension management page
+            4. Enable "Developer mode"
+            5. Click "Load unpacked" and select the extracted folder
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

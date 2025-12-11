@@ -1,0 +1,60 @@
+name: Deploy to Firefox Add-ons Store
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_notes:
+        description: 'Release notes for this version'
+        required: true
+        default: 'Bug fixes and improvements'
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build Firefox extension
+        run: bun run build:firefox
+
+      - name: Zip Firefox extension
+        run: bun run zip:firefox
+
+      - name: Find Firefox zip file
+        id: find_firefox_zip
+        run: |
+          FIREFOX_ZIP=$(ls .output/firefox-mv*.zip 2>/dev/null | head -1)
+          if [ -z "$FIREFOX_ZIP" ]; then
+            echo "Error: Firefox zip file not found"
+            exit 1
+          fi
+          echo "firefox_zip=$FIREFOX_ZIP" >> $GITHUB_OUTPUT
+          echo "Firefox zip: $FIREFOX_ZIP"
+
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Publish to Firefox Add-ons Store
+        uses: wdzeng/firefox-addon@v1
+        with:
+          addon-guid: ${{ secrets.FIREFOX_ADDON_GUID }}
+          jwt-issuer: ${{ secrets.FIREFOX_JWT_ISSUER }}
+          jwt-secret: ${{ secrets.FIREFOX_JWT_SECRET }}
+          xpi-path: ${{ steps.find_firefox_zip.outputs.firefox_zip }}
+
