@@ -26,7 +26,7 @@ import type { ExtensionSettings } from "../../../types";
  * //   error: null,
  * //   settings: {
  * //     pages: { homepage: false, shorts: true, watch: false },
- * //     features: { comments: false, sidebar: true, shortsRecommendations: false }
+ * //     features: { comments: false, sidebar: true, shortsRecommendations: false, grayscaleThumbnails: true }
  * //   }
  * // }
  * 
@@ -69,7 +69,7 @@ const getSettingsHandler = async () => {
  *   Must be either 'pages' or 'features'.
  * @param {string} key - The specific setting key within the category to update.
  *   For 'pages': 'homepage', 'shorts', or 'watch'
- *   For 'features': 'comments', 'sidebar', or 'shortsRecommendations'
+ *   For 'features': 'comments', 'sidebar', 'shortsRecommendations', or 'grayscaleThumbnails'
  * @param {boolean} value - The new boolean value to set for the specified setting.
  * 
  * @returns {Promise<{success: boolean, error: string | null}>}

@@ -30,6 +30,7 @@ const SETTINGS_CONFIG: SettingsSection[] = [
         description: 'Replace feed with a focus quote.',
         category: 'pages',
         key: 'homepage',
+        disabled: false,
       },
       {
         icon: Sidebar,
@@ -37,6 +38,7 @@ const SETTINGS_CONFIG: SettingsSection[] = [
         description: 'Remove navigation sidebar.',
         category: 'features',
         key: 'sidebar',
+        disabled: false,
       },
       {
         icon: Palette,
@@ -44,7 +46,7 @@ const SETTINGS_CONFIG: SettingsSection[] = [
         description: 'Reduce visual appeal of thumbnails.',
         category: 'features',
         key: 'grayscaleThumbnails',
-        disabled: true, // Not yet implemented in backend
+        disabled: false,
       },
     ],
   },
@@ -57,6 +59,7 @@ const SETTINGS_CONFIG: SettingsSection[] = [
         description: 'Disable Shorts player and tab.',
         category: 'pages',
         key: 'shorts',
+        disabled: false,
       },
       {
         icon: Film,
@@ -64,6 +67,7 @@ const SETTINGS_CONFIG: SettingsSection[] = [
         description: 'Remove Shorts shelf from feeds.',
         category: 'features',
         key: 'shortsRecommendations',
+        disabled: false,
       },
     ],
   },
@@ -76,6 +80,7 @@ const SETTINGS_CONFIG: SettingsSection[] = [
         description: 'Hide watch recommendations.',
         category: 'pages',
         key: 'watch',
+        disabled: false,
       },
       {
         icon: MessageSquareOff,
@@ -83,6 +88,7 @@ const SETTINGS_CONFIG: SettingsSection[] = [
         description: 'Remove comments section.',
         category: 'features',
         key: 'comments',
+        disabled: false,
       },
     ],
   },

@@ -17,6 +17,7 @@ export default defineContentScript({
           features.WatchCommentsOptimizations(false);
           features.SidebarRemovalOptimizations(false);
           features.ShortsRecommendationsOptimizations(false);
+          features.GrayscaleThumbnailsOptimizations(false);
         } else {
           // Extension is enabled - apply optimizations based on settings
           // For Page wise optimizations
@@ -28,6 +29,7 @@ export default defineContentScript({
           features.WatchCommentsOptimizations(message.settings.features.comments);
           features.SidebarRemovalOptimizations(message.settings.features.sidebar);
           features.ShortsRecommendationsOptimizations(message.settings.features.shortsRecommendations);
+          features.GrayscaleThumbnailsOptimizations(message.settings.features.grayscaleThumbnails);
         }
       }
     });

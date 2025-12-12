@@ -9,6 +9,7 @@ interface ExtensionSettingsProps {
         comments: boolean;
         sidebar: boolean;
         shortsRecommendations: boolean;
+        grayscaleThumbnails: boolean;
     };
 }
 

@@ -11,7 +11,7 @@ const DEFAULT_SETTINGS: ExtensionSettings = {
         comments: true,
         sidebar: false,
         shortsRecommendations: true,
-        grayscaleThumbnails: false,
+        grayscaleThumbnails: true,
     }
 };
 
