@@ -1,5 +1,5 @@
 interface ExtensionSettingsProps {
-    enabled: boolean;
+    extensionEnabled: boolean;
     pages: {
         homepage: boolean;
         shorts: boolean;

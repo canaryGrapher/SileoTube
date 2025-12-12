@@ -92,13 +92,14 @@ interface SettingsPanelProps {
   settings: StorageTypes.ExtensionSettingsProps | null;
   onSettingsChange: (settings: StorageTypes.ExtensionSettingsProps) => void;
   loading: boolean;
+  isEnabled: boolean;
 }
 
 /**
  * Settings panel component for toggling extension features
  * Displays toggles for pages and features with real-time updates.
  */
-function SettingsPanel({ settings, onSettingsChange, loading }: SettingsPanelProps) {
+function SettingsPanel({ settings, onSettingsChange, loading, isEnabled }: SettingsPanelProps) {
   // Show loading spinner while settings are being fetched
   if (loading) {
     return (
@@ -172,8 +173,9 @@ function SettingsPanel({ settings, onSettingsChange, loading }: SettingsPanelPro
             label={option.label}
             description={option.description}
             checked={getSettingValue(option)}
+            disabled={!isEnabled || option.disabled}
             onChange={(checked) => {
-              if (!option.disabled) {
+              if (!option.disabled && isEnabled) {
                 handleToggle(option.category, option.key, checked);
               }
             }}

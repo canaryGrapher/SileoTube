@@ -21,7 +21,7 @@ const Popup: React.FC = () => {
         if (response && typeof response === 'object' && 'settings' in response) {
           const loadedSettings = (response as { settings: StorageTypes.ExtensionSettingsProps }).settings;
           setSettings(loadedSettings);
-          setIsEnabled(loadedSettings.enabled ?? true);
+          setIsEnabled(loadedSettings.extensionEnabled ?? true);
         } else if (response && typeof response === 'object' && 'error' in response) {
           console.error('Failed to load settings:', (response as { error: string }).error);
         } else {
@@ -39,7 +39,7 @@ const Popup: React.FC = () => {
   // Sync isEnabled with settings when settings change
   useEffect(() => {
     if (settings) {
-      setIsEnabled(settings.enabled ?? true);
+      setIsEnabled(settings.extensionEnabled ?? true);
     }
   }, [settings]);
 
@@ -49,7 +49,14 @@ const Popup: React.FC = () => {
     e.stopPropagation();
     console.log('Toggle button clicked, current state:', isEnabled);
     try {
-      const response = await browser.runtime.sendMessage({ type: 'TOGGLE_EXTENSION' });
+      await browser.runtime.sendMessage({ type: 'TOGGLE_EXTENSION' });
+      const updatedSettings = await browser.runtime.sendMessage({ type: 'GET_SETTINGS' });
+      if (updatedSettings && typeof updatedSettings === 'object' && 'settings' in updatedSettings) {
+        const loadedSettings = (updatedSettings as { settings: StorageTypes.ExtensionSettingsProps }).settings;
+        setSettings(loadedSettings);
+        setIsEnabled(loadedSettings.extensionEnabled ?? true);
+      }
+
     } catch (error) {
       console.error('Error toggling extension:', error);
     }
@@ -83,8 +90,8 @@ const Popup: React.FC = () => {
               type="button"
               onClick={handleToggleExtension}
               className={`relative z-20 flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium rounded-xl transition-colors cursor-pointer ${isEnabled
-                  ? 'bg-green-100 text-green-600 hover:bg-green-200'
-                  : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                ? 'bg-green-100 text-green-600 hover:bg-green-200'
+                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
                 }`}
               style={{ pointerEvents: 'auto' }}
             >
@@ -97,11 +104,13 @@ const Popup: React.FC = () => {
           </div>
         </div>
       </div>
-
+      
+      
       {/* Scrollable Settings Panel */}
       <div className="flex-1 overflow-y-auto pt-[120px] pb-[50px]">
-        <SettingsPanel settings={settings} onSettingsChange={setSettings} loading={loading} />
+        <SettingsPanel settings={settings} onSettingsChange={setSettings} loading={loading} isEnabled={isEnabled} />
       </div>
+
 
       {/* Fixed Footer */}
       <div className="fixed bottom-0 left-0 w-[380px] bg-gray-100 z-10 border-t border-gray-200 rounded-b-xl">
