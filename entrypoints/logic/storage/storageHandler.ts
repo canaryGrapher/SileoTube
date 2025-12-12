@@ -45,7 +45,7 @@ const updateSetting = async (
         const newSettings = {
             ...currentSettings,
             [category]: {
-                ...currentSettings[category],
+                ...(currentSettings[category] as Record<string, boolean>),
                 [key]: value
             }
         };

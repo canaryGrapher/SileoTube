@@ -1,15 +1,17 @@
 import { ExtensionSettings } from "../types";
 
 const DEFAULT_SETTINGS: ExtensionSettings = {
+    extensionEnabled: true,
     pages: {
-        homepage: false,
-        shorts: false,
-        watch: false,
+        homepage: true,
+        shorts: true,
+        watch: true,
     },
     features: {
-        comments: false,
+        comments: true,
         sidebar: false,
-        shortsRecommendations: false,
+        shortsRecommendations: true,
+        grayscaleThumbnails: false,
     }
 };
 
