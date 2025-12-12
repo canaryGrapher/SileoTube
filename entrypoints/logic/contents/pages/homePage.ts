@@ -187,7 +187,6 @@ const AddHomePageOptimizations = () => {
           justify-content: center;
           align-items: center;
           gap: 0;
-          box-shadow: 0 0 8px 2px rgb(166, 0, 0), 0 0 8px 2px rgb(166, 0, 0);
           border: 1px solid rgb(166, 0, 0);
         }
 
