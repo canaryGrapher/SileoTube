@@ -1,17 +1,18 @@
 import { Dispatch, SetStateAction } from 'react';
 import SettingCard from './SettingsCard';
+import { useTheme } from '../App';
 import { handleFeatureToggle } from '../utils/storage/handleFeatureToggle';
-import { LayoutTemplate, Sidebar, Palette, Zap, Film, Power, MessageSquareOff, LucideIcon } from 'lucide-react';
+import {
+  LayoutTemplate, Sidebar, Palette, Zap, Film, Tv2, MessageSquareOff, LucideIcon,
+} from 'lucide-react';
 import { StorageTypes } from '../types';
 
-// Configuration for all settings sections and their options
 interface SettingOption {
   icon: LucideIcon;
   label: string;
   description: string;
   category: keyof StorageTypes.ExtensionSettingsProps;
   key: string;
-  // Optional: if true, this setting is not yet implemented
   disabled?: boolean;
 }
 
@@ -26,11 +27,10 @@ const SETTINGS_CONFIG: SettingsSection[] = [
     options: [
       {
         icon: LayoutTemplate,
-        label: 'Minimal Home Screen',
-        description: 'Replace feed with a focus quote.',
+        label: 'Minimal Home',
+        description: 'Replace feed with a focus search.',
         category: 'pages',
         key: 'homepage',
-        disabled: false,
       },
       {
         icon: Sidebar,
@@ -38,36 +38,32 @@ const SETTINGS_CONFIG: SettingsSection[] = [
         description: 'Remove navigation sidebar.',
         category: 'features',
         key: 'sidebar',
-        disabled: false,
       },
       {
         icon: Palette,
-        label: 'Grayscale Thumbnails',
+        label: 'Grayscale Thumbs',
         description: 'Reduce visual appeal of thumbnails.',
         category: 'features',
         key: 'grayscaleThumbnails',
-        disabled: false,
       },
     ],
   },
   {
-    title: 'Shorts Blocker',
+    title: 'Shorts',
     options: [
       {
         icon: Zap,
-        label: 'Block Shorts Tab',
+        label: 'Block Shorts',
         description: 'Disable Shorts player and tab.',
         category: 'pages',
         key: 'shorts',
-        disabled: false,
       },
       {
         icon: Film,
-        label: 'Hide Shorts Recommendations',
+        label: 'Hide Shelf',
         description: 'Remove Shorts shelf from feeds.',
         category: 'features',
         key: 'shortsRecommendations',
-        disabled: false,
       },
     ],
   },
@@ -75,20 +71,18 @@ const SETTINGS_CONFIG: SettingsSection[] = [
     title: 'Watch Page',
     options: [
       {
-        icon: Power,
-        label: 'Clean Watch Page',
+        icon: Tv2,
+        label: 'Clean Watch',
         description: 'Hide watch recommendations.',
         category: 'pages',
         key: 'watch',
-        disabled: false,
       },
       {
         icon: MessageSquareOff,
-        label: 'Hide comments',
+        label: 'Hide Comments',
         description: 'Remove comments section.',
         category: 'features',
         key: 'comments',
-        disabled: false,
       },
     ],
   },
@@ -101,99 +95,81 @@ interface SettingsPanelProps {
   isEnabled: boolean;
 }
 
-/**
- * Settings panel component for toggling extension features
- * Displays toggles for pages and features with real-time updates.
- */
 function SettingsPanel({ settings, onSettingsChange, loading, isEnabled }: SettingsPanelProps) {
-  // Show loading spinner while settings are being fetched
+  const isDark = useTheme();
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="flex items-center justify-center p-10">
+        <div className="w-6 h-6 rounded-full border-2 border-red-500/40 border-t-red-500 animate-spin" />
       </div>
     );
   }
 
-  // Show error message if settings failed to load
-  if (!settings && !loading) {
+  if (!settings) {
     return (
-      <div className="p-4 text-center text-red-600">
-        Failed to load settings
-      </div>
+      <div className="p-4 text-center text-red-400 text-sm">Failed to load settings</div>
     );
   }
 
-  /**
-   * Handle toggle change for a setting
-   * Updates the setting via handleFeatureToggle which syncs with background storage
-   */
   const handleToggle = (
     category: keyof StorageTypes.ExtensionSettingsProps,
     key: string,
     value: boolean
   ) => {
-    // Create a wrapper that matches the Dispatch type expected by handleFeatureToggle
-    // handleFeatureToggle will call this with either a value or a function
     const setSettingsWrapper: Dispatch<SetStateAction<StorageTypes.ExtensionSettingsProps | null>> = (
       valueOrUpdater
     ) => {
       if (typeof valueOrUpdater === 'function') {
-        // If it's a function, call it with current settings and pass result to onSettingsChange
         const newSettings = valueOrUpdater(settings);
-        if (newSettings) {
-          onSettingsChange(newSettings);
-        }
+        if (newSettings) onSettingsChange(newSettings);
       } else if (valueOrUpdater) {
-        // If it's a value, pass it directly to onSettingsChange
         onSettingsChange(valueOrUpdater);
       }
     };
-    
     handleFeatureToggle(category, key, value, setSettingsWrapper);
   };
 
-  /**
-   * Get the current checked state for a setting
-   */
-  const getSettingValue = (option: SettingOption): boolean => {
+  const getValue = (option: SettingOption): boolean => {
     if (option.disabled) return false;
-    const categorySettings = settings?.[option.category];
-    if (!categorySettings) return false;
-    return (categorySettings as Record<string, boolean>)[option.key] || false;
+    const cat = settings?.[option.category];
+    return (cat as Record<string, boolean>)?.[option.key] ?? false;
   };
 
-  /**
-   * Render a single settings section with its options
-   */
-  const renderSection = (section: SettingsSection) => (
-    <div key={section.title}>
-      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-        {section.title}
-      </h3>
-      <div className="space-y-0 bg-white rounded-lg">
-        {section.options.map((option) => (
-          <SettingCard
-            key={`${option.category}-${option.key}`}
-            icon={option.icon}
-            label={option.label}
-            description={option.description}
-            checked={getSettingValue(option)}
-            disabled={!isEnabled || option.disabled}
-            onChange={(checked) => {
-              if (!option.disabled && isEnabled) {
-                handleToggle(option.category, option.key, checked);
-              }
-            }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-
   return (
-    <div className="px-5 pb-6 space-y-6">
-      {SETTINGS_CONFIG.map(renderSection)}
+    <div className="px-4 pb-4 space-y-5">
+      {SETTINGS_CONFIG.map((section) => (
+        <div key={section.title}>
+          <p className={[
+            'text-[10px] font-semibold uppercase tracking-widest mb-2.5 px-0.5',
+            isDark ? 'text-gray-500' : 'text-gray-400',
+          ].join(' ')}>
+            {section.title}
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            {section.options.map((option, idx) => {
+              const isLast = idx === section.options.length - 1;
+              const isOdd = section.options.length % 2 !== 0;
+              return (
+                <SettingCard
+                  key={`${option.category}-${option.key}`}
+                  icon={option.icon}
+                  label={option.label}
+                  description={option.description}
+                  checked={getValue(option)}
+                  disabled={!isEnabled || !!option.disabled}
+                  colSpan={isOdd && isLast}
+                  onChange={(checked) => {
+                    if (!option.disabled && isEnabled) {
+                      handleToggle(option.category, option.key, checked);
+                    }
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

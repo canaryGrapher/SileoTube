@@ -79,8 +79,8 @@ jobs:
             ${{ steps.find_zips.outputs.chrome_zip }}
             ${{ steps.find_zips.outputs.edge_zip }}
             ${{ steps.find_zips.outputs.firefox_zip }}
-          tag_name: v${{ steps.get_version.outputs.version }}
-          name: Release v${{ steps.get_version.outputs.version }}
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           body: |
             ## SileoTube v${{ steps.get_version.outputs.version }}
             

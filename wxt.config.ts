@@ -5,12 +5,13 @@ export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
     "name": "SileoTube",
-    "version": "2.1.0",
-    "version_name": "Stable-2.1",
     "description": "A calming, decluttered YouTube experience.",
     permissions: [
       'storage',
       'tabs',
+    ],
+    host_permissions: [
+      'https://suggestqueries.google.com/*',
     ],
     browser_specific_settings: {
       gecko: {

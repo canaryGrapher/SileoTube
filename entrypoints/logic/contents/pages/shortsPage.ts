@@ -1,3 +1,5 @@
+import waitForElement from '../waitForElement';
+
 const pageBackground = {
     url: 'https://ik.imagekit.io/canarygrapher/sileotube/images/Netflix_gJt-_mp3Z.png?updatedAt=1761850643241',
     description: 'A television with Netflix logo lit on it',
@@ -11,9 +13,36 @@ const pageBackground = {
     }
 }
 
+let videoObserver: MutationObserver | null = null;
+
+const silenceVideo = (video: HTMLVideoElement) => {
+    video.pause();
+    video.muted = true;
+    video.volume = 0;
+};
+
+const silenceAllVideos = () => {
+    document.querySelectorAll<HTMLVideoElement>('video').forEach(silenceVideo);
+};
+
+const startVideoObserver = () => {
+    if (videoObserver) return;
+    silenceAllVideos();
+    videoObserver = new MutationObserver(() => silenceAllVideos());
+    videoObserver.observe(document.body, { childList: true, subtree: true });
+};
+
+const stopVideoObserver = () => {
+    videoObserver?.disconnect();
+    videoObserver = null;
+    document.querySelectorAll<HTMLVideoElement>('video').forEach(v => {
+        v.muted = false;
+        v.volume = 1;
+    });
+};
+
 // Apply styles to the shorts page
 const applyStyles = () => {
-    document.querySelector("video")?.pause()
     const _style = document.getElementById('sileotube-shorts-blocker-focus');
 
     if (_style) {
@@ -105,7 +134,6 @@ const applyOverlay = () => {
         _overlayElement.remove();
     }
 
-    const shortsContainer = document.querySelector("#shorts-container")
     const overlayElement = document.createElement('div')
     overlayElement.id = 'sileotube-shorts-blocker-overlay';
 
@@ -164,16 +192,17 @@ const applyOverlay = () => {
 
     overlayElement.appendChild(center);
 
-    shortsContainer?.appendChild(overlayElement);
+    waitForElement('#shorts-container', (el) => el.appendChild(overlayElement));
 }
 
 const addShortsPageOptimizations = () => {
-    // mute the shorts page
+    startVideoObserver();
     applyStyles();
     applyOverlay();
 }
 
 const removeShortsPageOptimizations = () => {
+    stopVideoObserver();
     const style = document.getElementById('sileotube-shorts-blocker-focus');
     const overlayElement = document.getElementById('sileotube-shorts-blocker-overlay');
     const ack = document.getElementById('sileotube-shorts-image-ack');
